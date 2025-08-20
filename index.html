@@ -329,7 +329,7 @@
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: 0.5s;
-        }
+            }
         
         button:hover::before {
             left: 100%;
@@ -359,12 +359,6 @@
         #startGameBtn {
             background: linear-gradient(135deg, #4CAF50, #2E7D32);
             color: white;
-        }
-        
-        #pauseGameBtn {
-            background: linear-gradient(135deg, #ff9800, #f57c00);
-            color: white;
-            display: none;
         }
         
         #endGameBtn {
@@ -430,6 +424,11 @@
             opacity: 0.6;
         }
         
+        .player-card.voted-out {
+            border: 2px solid #ff9800;
+            background: linear-gradient(145deg, rgba(255, 152, 0, 0.1), rgba(44, 62, 80, 0.8));
+        }
+        
         .player-number {
             font-size: 2.2rem;
             font-weight: bold;
@@ -474,7 +473,7 @@
             z-index: 100;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 10px;
         }
         
         .timer-day {
@@ -653,28 +652,28 @@
         }
         
         .alive-count-card {
-            background: linear-gradient(145deg, rgba(44, 62, 80, 0.8), rgba(33, 47, 60, 0.8));
-            border-radius: 15px;
-            padding: 20px;
+            background: rgba(30, 30, 50, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
             text-align: center;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
         .alive-count-card.mafia {
-            background: linear-gradient(145deg, rgba(20, 20, 30, 0.9), rgba(10, 10, 20, 0.9));
+            background: rgba(20, 20, 30, 0.9);
             border: 1px solid rgba(211, 47, 47, 0.3);
         }
         
         .alive-count-title {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: bold;
             margin-bottom: 10px;
             color: #ff9800;
         }
         
         .alive-count-number {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: bold;
             color: #e0e0e0;
         }
@@ -703,6 +702,7 @@
             font-size: 0.85rem;
             color: #aaa;
             margin-bottom: 5px;
+            display: block;
         }
         
         .log-message {
@@ -724,6 +724,16 @@
         }
         
         .player-control-row.dead {
+            background: linear-gradient(145deg, rgba(50, 50, 50, 0.7), rgba(30, 30, 30, 0.7));
+            opacity: 0.7;
+        }
+        
+        .player-control-row.voted-out {
+            background: linear-gradient(145deg, rgba(255, 152, 0, 0.1), rgba(33, 47, 60, 0.8));
+            border: 1px solid #ff9800;
+        }
+        
+        .player-control-row.voted-out.dead {
             background: linear-gradient(145deg, rgba(50, 50, 50, 0.7), rgba(30, 30, 30, 0.7));
             opacity: 0.7;
         }
@@ -1126,7 +1136,7 @@
             color: #aaa;
         }
         
-        /* Стили для активных выбранных элементов */
+        /* Стили для active выбранных элементов */
         .player-select.selected {
             background: rgba(211, 47, 47, 0.2);
             border-color: #ff9800;
@@ -1184,6 +1194,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            cursor: move;
         }
         
         /* Новый стиль для отображения игроков в две колонки */
@@ -1266,14 +1277,19 @@
             z-index: 1;
         }
         
-        .column-player-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        .column-player-card.voted-out {
+            border: 2px solid #ff9800;
+            background: linear-gradient(145deg, rgba(255, 152, 0, 0.1), rgba(44, 62, 80, 0.8));
         }
         
         .column-player-card.dead {
             opacity: 0.5;
             filter: grayscale(1);
+        }
+        
+        .column-player-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
         }
         
         .column-player-number {
@@ -1312,6 +1328,226 @@
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
             background: linear-gradient(145deg, rgba(255, 215, 0, 0.1), rgba(44, 62, 80, 0.9));
         }
+        
+        /* Кнопка тех. паузы */
+        .technical-pause-btn {
+            background: linear-gradient(135deg, #9c27b0, #7b1fa2) !important;
+        }
+        
+        /* Кнопка истории дней */
+        .history-btn {
+            background: linear-gradient(135deg, #607d8b, #455a64) !important;
+        }
+        
+        /* Модальное окно истории дней */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: rgba(30, 30, 50, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            color: #ff9800;
+            margin: 0;
+        }
+        
+        .close-modal {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .day-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .day-btn {
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #d32f2f;
+            color: #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .day-btn.active {
+            background: #d32f2f;
+            color: white;
+        }
+        
+        .day-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .day-action {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .day-action:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .day-action-title {
+            font-weight: bold;
+            color: #ff9800;
+            margin-bottom: 5px;
+        }
+        
+        /* Поле заметок ведущего */
+        .master-notes {
+            margin-top: 30px;
+        }
+        
+        .master-notes textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-family: inherit;
+            resize: vertical;
+        }
+        
+        /* Drag and drop стили */
+        .queue-player.dragging {
+            opacity: 0.5;
+            background: rgba(211, 47, 47, 0.4);
+        }
+        
+        /* Стили для множественного выбора */
+        .player-select[multiple] {
+            height: 120px;
+            background-image: none;
+            padding-right: 12px;
+        }
+        
+        .player-select[multiple] option {
+            padding: 8px 12px;
+            margin: 2px 0;
+            border-radius: 4px;
+        }
+        
+        .player-select[multiple] option:checked {
+            background: #d32f2f linear-gradient(0deg, #d32f2f 0%, #d32f2f 100%);
+            color: white;
+        }
+        
+        /* Стили для настроек отображения заметок */
+        .notes-setting {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Новые стили для чекбоксов выгнанных игроков */
+        .voted-out-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .voted-out-checkbox {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .voted-out-checkbox input[type="checkbox"] {
+            display: none;
+        }
+
+        .voted-out-checkbox label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #d32f2f;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+
+        .voted-out-checkbox input[type="checkbox"]:checked + label {
+            background: #d32f2f;
+            color: white;
+            box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
+        }
+
+        .voted-out-checkbox label:hover {
+            background: rgba(211, 47, 47, 0.2);
+        }
+
+        .voted-out-checkbox span {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        /* Стиль для заблокированной кнопки таймера */
+        .timer-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: linear-gradient(135deg, #9e9e9e, #616161) !important;
+        }
+
+        .timer-btn.disabled:hover {
+            transform: none !important;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3) !important;
+        }
     </style>
 </head>
 <body>
@@ -1324,6 +1560,8 @@
             <button class="timer-btn reset" id="resetBtn"><i class="fas fa-undo"></i> Сбросить</button>
             <button class="timer-btn add-time" id="add30Btn"><i class="fas fa-plus"></i> +30 сек</button>
             <button class="timer-btn short" id="set30Btn"><i class="fas fa-hourglass-half"></i> 30 сек</button>
+            <button class="timer-btn technical-pause-btn" id="technicalPauseBtn"><i class="fas fa-cog"></i> Тех. пауза</button>
+            <button class="timer-btn" id="nextDayTimerBtn"><i class="fas fa-sun"></i> След. день</button>
         </div>
     </div>
     
@@ -1363,6 +1601,18 @@
     
     <div class="drawer-toggle drawer-toggle-right" id="toggleLogDrawer">
         <i class="fas fa-book"></i>
+    </div>
+    
+    <!-- Модальное окно истории дней -->
+    <div class="modal" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">История дней</h2>
+                <button class="close-modal" id="closeHistoryModal">&times;</button>
+            </div>
+            <div class="day-selector" id="daySelector"></div>
+            <div class="day-info" id="dayInfo"></div>
+        </div>
     </div>
     
     <!-- Плавающие уведомления о победе -->
@@ -1429,6 +1679,10 @@
                             <span class="role-name"><i class="fas fa-heartbeat"></i> Доктор</span>
                             <input type="checkbox" id="doctorCheckbox" checked>
                         </div>
+                        <div class="role-control notes-setting">
+                            <span class="role-name"><i class="fas fa-sticky-note"></i> Поле заметок ведущего</span>
+                            <input type="checkbox" id="showNotesCheckbox" checked>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1437,9 +1691,8 @@
         <div class="buttons">
             <button id="randomizeBtn"><i class="fas fa-random"></i> Рандомить</button>
             <button id="startGameBtn"><i class="fas fa-play"></i> Начать игру</button>
-            <button id="pauseGameBtn"><i class="fas fa-pause"></i> Пауза</button>
             <button id="endGameBtn"><i class="fas fa-stop"></i> Закончить игру</button>
-            <button id="nextDayBtn"><i class="fas fa-sun"></i> Следующий день</button>
+            <button class="history-btn" id="historyBtn"><i class="fas fa-history"></i> История дней</button>
         </div>
         
         <div id="rolesResult">
@@ -1472,7 +1725,6 @@
                             </div>
                             <div class="queue-players" id="queuePlayers"></div>
                         </div>
-                        <textarea class="notes-textarea" placeholder="Заметки по голосованию..." id="votingNotes"></textarea>
                     </div>
                     
                     <div class="roles-notes-section">
@@ -1481,30 +1733,38 @@
                             <select class="player-select" id="mafiaKill">
                                 <option value="">Выберите игрока</option>
                             </select>
-                            <textarea class="role-notes-textarea" placeholder="Заметки по киллу..." id="mafiaKillNotes"></textarea>
                         </div>
                         <div class="role-note">
                             <h5><i class="fas fa-user-secret"></i> Чек дона:</h5>
                             <select class="player-select" id="donCheck">
                                 <option value="">Выберите игрока</option>
                             </select>
-                            <textarea class="role-notes-textarea" placeholder="Заметки по чеку дона..." id="donCheckNotes"></textarea>
                         </div>
                         <div class="role-note">
                             <h5><i class="fas fa-search"></i> Чек комиссара:</h5>
                             <select class="player-select" id="commissarCheck">
                                 <option value="">Выберите игрока</option>
                             </select>
-                            <textarea class="role-notes-textarea" placeholder="Заметки по чеку комиссара..." id="commissarCheckNotes"></textarea>
+                        </div>
+                        <div class="role-note">
+                            <h5><i class="fas fa-user-slash"></i> Выгнан в результате голосования:</h5>
+                            <div class="voted-out-checkboxes" id="votedOutPlayers"></div>
                         </div>
                         <div class="role-note doctor-section hidden-section">
                             <h5><i class="fas fa-heartbeat"></i> Хилл доктора:</h5>
                             <select class="player-select" id="doctorHeal">
                                 <option value="">Выберите игрока</option>
                             </select>
-                            <textarea class="role-notes-textarea" placeholder="Заметки по хилу..." id="doctorHealNotes"></textarea>
                         </div>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Заметки ведущего -->
+            <div class="notes-section master-notes">
+                <h3 class="section-toggle"><i class="fas fa-pencil-alt"></i> Заметки ведущего <i class="fas fa-chevron-down"></i></h3>
+                <div class="settings-content">
+                    <textarea placeholder="Здесь вы можете делать свои заметки..." id="masterNotes"></textarea>
                 </div>
             </div>
             
@@ -1517,7 +1777,7 @@
         
         <footer>
             <p>Программа для игры в Мафию | Премиум версия</p>
-            <p>Сделано с любовью к классической игре</p>
+            <p>Сделано с любовь к классической игре</p>
         </footer>
     </div>
 
@@ -1525,14 +1785,14 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Элементы DOM
             const doctorCheckbox = document.getElementById('doctorCheckbox');
+            const showNotesCheckbox = document.getElementById('showNotesCheckbox');
             const countButtons = document.querySelectorAll('.count-btn');
             const civiliansCountSpan = document.getElementById('civiliansCount');
             
             const randomizeBtn = document.getElementById('randomizeBtn');
             const startGameBtn = document.getElementById('startGameBtn');
-            const pauseGameBtn = document.getElementById('pauseGameBtn');
             const endGameBtn = document.getElementById('endGameBtn');
-            const nextDayBtn = document.getElementById('nextDayBtn');
+            const historyBtn = document.getElementById('historyBtn');
             
             const mafiaPlayersContainer = document.getElementById('mafiaPlayers');
             const civilianPlayersContainer = document.getElementById('civilianPlayers');
@@ -1550,6 +1810,8 @@
             const resetBtn = document.getElementById('resetBtn');
             const add30Btn = document.getElementById('add30Btn');
             const set30Btn = document.getElementById('set30Btn');
+            const technicalPauseBtn = document.getElementById('technicalPauseBtn');
+            const nextDayTimerBtn = document.getElementById('nextDayTimerBtn');
             
             // Элементы победы
             const mafiaVictoryMessage = document.getElementById('mafiaVictoryMessage');
@@ -1567,15 +1829,18 @@
             // Элементы заметок
             const votingButtons = document.getElementById('votingButtons');
             const queuePlayers = document.getElementById('queuePlayers');
-            const votingNotes = document.getElementById('votingNotes');
             const mafiaKill = document.getElementById('mafiaKill');
             const donCheck = document.getElementById('donCheck');
             const commissarCheck = document.getElementById('commissarCheck');
             const doctorHeal = document.getElementById('doctorHeal');
-            const mafiaKillNotes = document.getElementById('mafiaKillNotes');
-            const donCheckNotes = document.getElementById('donCheckNotes');
-            const commissarCheckNotes = document.getElementById('commissarCheckNotes');
-            const doctorHealNotes = document.getElementById('doctorHealNotes');
+            const votedOutContainer = document.getElementById('votedOutPlayers');
+            const masterNotes = document.getElementById('masterNotes');
+            
+            // История дней
+            const historyModal = document.getElementById('historyModal');
+            const closeHistoryModal = document.getElementById('closeHistoryModal');
+            const daySelector = document.getElementById('daySelector');
+            const dayInfo = document.getElementById('dayInfo');
             
             // Секции доп ролей
             const doctorSection = document.querySelector('.doctor-section');
@@ -1608,6 +1873,7 @@
             let roles = [];
             let totalPlayers = 10;
             let deadPlayers = [];
+            let votedOutPlayers = []; // Новый массив для выгнанных игроков
             let timerInterval;
             let timerRunning = false;
             let seconds = 60;
@@ -1617,6 +1883,9 @@
             let currentDay = 1;
             let queuePlayersList = [];
             let isPaused = false;
+            let isTechnicalPause = false;
+            let daysHistory = [];
+            let dragSrcElement = null;
 
             // Функция добавления записи в лог
             function addLogEntry(message) {
@@ -1635,7 +1904,7 @@
                 logContent.scrollTop = logContent.scrollHeight;
             }
             
-            // Обновление отображения лога
+            // Обновление отображения логa
             function updateLogDisplay() {
                 logContent.innerHTML = '';
                 
@@ -1663,20 +1932,89 @@
             function updateRoleSectionsVisibility() {
                 doctorSection.classList.toggle('hidden-section', !doctorCheckbox.checked);
             }
+            
+            // Обновление видимости поля заметки
+            function updateNotesVisibility() {
+                const masterNotesSection = document.querySelector('.master-notes');
+                if (showNotesCheckbox.checked) {
+                    masterNotesSection.style.display = 'block';
+                } else {
+                    masterNotesSection.style.display = 'none';
+                }
+            }
 
             // Функция для обновления отображения дня
             function updateDayDisplay() {
                 timerDay.textContent = `День ${currentDay}`;
             }
 
+            // Функция обновления списка выгнанных игроков (чекбоксы)
+            function updateVotedOutPlayersList() {
+                votedOutContainer.innerHTML = '';
+                
+                for (let i = 1; i <= totalPlayers; i++) {
+                    const playerIndex = i - 1;
+                    const checkboxDiv = document.createElement('div');
+                    checkboxDiv.className = 'voted-out-checkbox';
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `votedOutPlayer${i}`;
+                    checkbox.value = i;
+                    checkbox.checked = votedOutPlayers.includes(playerIndex);
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = `votedOutPlayer${i}`;
+                    label.textContent = i;
+                    
+                    checkboxDiv.appendChild(checkbox);
+                    checkboxDiv.appendChild(label);
+                    
+                    // Изменяем обработчик - теперь он работает только с votedOutPlayers
+                    checkbox.addEventListener('change', function() {
+                        if (isPaused || isTechnicalPause) return;
+                        
+                        const playerNum = parseInt(this.value);
+                        const playerIndex = playerNum - 1;
+                        
+                        if (this.checked) {
+                            if (!votedOutPlayers.includes(playerIndex)) {
+                                votedOutPlayers.push(playerIndex);
+                                addLogEntry(`Игрок ${playerNum} выгнан в результате голосования`);
+                            }
+                        } else {
+                            votedOutPlayers = votedOutPlayers.filter(p => p !== playerIndex);
+                            addLogEntry(`Игрок ${playerNum} возвращен в игру после голосования`);
+                        }
+                        
+                        // Обновляем отображение, но не меняем deadPlayers
+                        displayPlayers();
+                        createGameInterface();
+                        
+                        if (checkCiviliansVictory()) {
+                            civiliansVictoryMessage.style.display = 'block';
+                            document.querySelector('.victory-messages').style.display = 'grid';
+                            addLogEntry('ПОБЕДА МИРНЫХ ЖИТЕЛЕЙ!');
+                        } else if (checkMafiaVictory()) {
+                            mafiaVictoryMessage.style.display = 'block';
+                            document.querySelector('.victory-messages').style.display = 'grid';
+                            addLogEntry('ПОБЕДА МАФИИ!');
+                        }
+                    });
+                    
+                    votedOutContainer.appendChild(checkboxDiv);
+                }
+            }
+
             // Функция блокировки/разблокировки интерфейса при паузе
             function togglePauseState(isPaused) {
                 const elementsToDisable = [
-                    randomizeBtn, endGameBtn, nextDayBtn,
+                    randomizeBtn, endGameBtn,
                     ...document.querySelectorAll('.player-select'),
                     ...document.querySelectorAll('.voting-btn'),
                     ...document.querySelectorAll('.control-cell'),
-                    ...document.querySelectorAll('.kill-btn')
+                    ...document.querySelectorAll('.kill-btn'),
+                    ...document.querySelectorAll('#votedOutPlayers input')
                 ];
                 
                 elementsToDisable.forEach(element => {
@@ -1684,17 +2022,27 @@
                 });
                 
                 // Блокируем/разблокируем таймер
-                const timerButtons = [startStopBtn, resetBtn, add30Btn, set30Btn];
+                const timerButtons = [startStopBtn, resetBtn, add30Btn, set30Btn, nextDayTimerBtn];
                 timerButtons.forEach(btn => {
-                    if (btn !== startStopBtn) { // Кнопка паузы/возобновления должна оставаться активной
+                    if (btn !== technicalPauseBtn) {
                         btn.disabled = isPaused;
+                        if (isPaused) {
+                            btn.classList.add('disabled');
+                        } else {
+                            btn.classList.remove('disabled');
+                        }
                     }
                 });
+                
+                // Разрешаем историю и заметки даже во время паузы
+                historyBtn.disabled = false;
+                masterNotes.disabled = false;
             }
 
             // Инициализация
             updateCiviliansCount();
             updateRoleSectionsVisibility();
+            updateNotesVisibility();
             updateDayDisplay();
             
             doctorCheckbox.addEventListener('change', function() {
@@ -1702,6 +2050,8 @@
                 updateRoleSectionsVisibility();
                 addLogEntry('Роль Доктора ' + (this.checked ? 'добавлена' : 'убрана'));
             });
+            
+            showNotesCheckbox.addEventListener('change', updateNotesVisibility);
 
             // Установка количества игроков
             countButtons.forEach(btn => {
@@ -1713,6 +2063,7 @@
                     updateCiviliansCount();
                     generateRoles();
                     displayPlayers();
+                    updateVotedOutPlayersList();
                     
                     addLogEntry(`Количество игроков изменено на ${totalPlayers}`);
                 });
@@ -1769,6 +2120,12 @@
                         playerCard.classList.add('don');
                     }
                     
+                    // Добавляем класс voted-out если игрок выгнан
+                    if (votedOutPlayers.includes(i)) {
+                        playerCard.classList.add('voted-out');
+                    }
+                    
+                    // Добавляем класс dead если игрок убит
                     if (deadPlayers.includes(i)) {
                         playerCard.classList.add('dead');
                     }
@@ -1783,14 +2140,14 @@
                     // Распределяем по колонкам
                     if (roles[i] === 'Дон' || roles[i] === 'Мафия') {
                         mafiaPlayersContainer.appendChild(playerCard);
-                        if (!deadPlayers.includes(i)) mafiaCount++;
+                        if (!deadPlayers.includes(i) && !votedOutPlayers.includes(i)) mafiaCount++;
                     } else {
                         civilianPlayersContainer.appendChild(playerCard);
-                        if (!deadPlayers.includes(i)) civiliansCount++;
+                        if (!deadPlayers.includes(i) && !votedOutPlayers.includes(i)) civiliansCount++;
                     }
                 }
                 
-                // Обновляем счетчики
+                // Обновляем счетчики (исключаем и убитых, и выгнанных)
                 mafiaCountSpan.textContent = mafiaCount;
                 civiliansAliveCountSpan.textContent = civiliansCount;
             }
@@ -1801,7 +2158,8 @@
                 let civiliansAlive = 0;
                 
                 for (let i = 0; i < totalPlayers; i++) {
-                    if (deadPlayers.includes(i)) continue;
+                    // Игрок не участвует если убит ИЛИ выгнан
+                    if (deadPlayers.includes(i) || votedOutPlayers.includes(i)) continue;
                     
                     if (roles[i] === 'Дон' || roles[i] === 'Мафия') {
                         mafiaAlive++;
@@ -1816,7 +2174,8 @@
             // Проверка на победу мирных
             function checkCiviliansVictory() {
                 for (let i = 0; i < totalPlayers; i++) {
-                    if (deadPlayers.includes(i)) continue;
+                    // Игрок не участвует если убит ИЛИ выгнан
+                    if (deadPlayers.includes(i) || votedOutPlayers.includes(i)) continue;
                     
                     if (roles[i] === 'Дон' || roles[i] === 'Мафия') {
                         return false;
@@ -1834,9 +2193,17 @@
                     
                     const playerControl = document.createElement('div');
                     playerControl.className = 'player-control-row';
+                    
+                    // Добавляем класс voted-out если игрок выгнан
+                    if (votedOutPlayers.includes(i)) {
+                        playerControl.classList.add('voted-out');
+                    }
+                    
+                    // Добавляем класс dead если игрок убит
                     if (deadPlayers.includes(i)) {
                         playerControl.classList.add('dead');
                     }
+                    
                     playerControl.dataset.player = i;
                     
                     playerControl.innerHTML = `
@@ -1882,7 +2249,7 @@
                 const controlCells = document.querySelectorAll('.control-cell');
                 controlCells.forEach(cell => {
                     cell.addEventListener('click', function() {
-                        if (isPaused) return;
+                        if (isPaused || isTechnicalPause) return;
                         
                         const playerControl = this.closest('.player-control-row');
                         if (playerControl.classList.contains('dead')) return;
@@ -1928,7 +2295,7 @@
                 const killButtons = document.querySelectorAll('.kill-btn');
                 killButtons.forEach(btn => {
                     btn.addEventListener('click', function() {
-                        if (isPaused) return;
+                        if (isPaused || isTechnicalPause) return;
                         
                         const playerIndex = parseInt(this.dataset.player);
                         
@@ -1954,12 +2321,16 @@
                         }
                     });
                 });
+                
+                // Обновляем список выгнанных игроков
+                updateVotedOutPlayersList();
             }
             
             // Функция сброса игры
             function resetGame() {
-                // Очищаем список убитых
+                // Очищаем списки
                 deadPlayers = [];
+                votedOutPlayers = [];
                 currentDay = 1;
                 updateDayDisplay();
                 queuePlayersList = [];
@@ -1979,11 +2350,11 @@
                 randomizeBtn.disabled = false;
                 gameStarted = false;
                 isPaused = false;
+                isTechnicalPause = false;
                 
-                // Скрываем кнопки паузы и завершения игры
-                pauseGameBtn.style.display = 'none';
+                // Скрываем кнопки завершения игры
                 endGameBtn.style.display = 'none';
-                nextDayBtn.style.display = 'none';
+                historyBtn.style.display = 'none';
                 startGameBtn.style.display = 'flex';
                 
                 // Обновляем отображение игроков
@@ -1998,33 +2369,31 @@
                 // Сброс выбранных игроков в заметках
                 const playerSelects = document.querySelectorAll('.player-select');
                 playerSelects.forEach(select => {
-                    select.value = "";
+                    if (select.multiple) {
+                        Array.from(select.options).forEach(option => {
+                            option.selected = false;
+                        });
+                    } else {
+                        select.value = "";
+                    }
                     select.classList.remove('selected');
                 });
                 
                 // Сброс текстовых полей заметок
-                const noteFields = [
-                    votingNotes, mafiaKillNotes, donCheckNotes,
-                    commissarCheckNotes, doctorHealNotes
-                ];
-                noteFields.forEach(field => field.value = "");
-                
-                // Сброс кнопки паузы
-                pauseGameBtn.innerHTML = '<i class="fas fa-pause"></i> Пауза';
-                pauseGameBtn.style.background = 'linear-gradient(135deg, #ff9800, #f57c00)';
-                
-                // Сброс кнопок голосования
-                const votingBtns = document.querySelectorAll('.voting-btn');
-                votingBtns.forEach(btn => btn.classList.remove('active'));
+                masterNotes.value = "";
                 
                 // Разблокируем настройки
                 countButtons.forEach(btn => {
                     btn.disabled = false;
                 });
                 doctorCheckbox.disabled = false;
+                showNotesCheckbox.disabled = false;
                 
                 // Разблокируем интерфейс
                 togglePauseState(false);
+                
+                // Очищаем историю дней
+                daysHistory = [];
                 
                 addLogEntry('Игра сброшена. Все игроки оживлены, заметки очищены.');
             }
@@ -2045,7 +2414,7 @@
             }
             
             function startTimer() {
-                if (timerRunning) return;
+                if (timerRunning || isTechnicalPause) return;
                 
                 timerRunning = true;
                 startStopBtn.innerHTML = '<i class="fas fa-pause"></i> Пауза';
@@ -2101,7 +2470,7 @@
             
             // Обработчики событий таймера
             startStopBtn.addEventListener('click', function() {
-                if (isPaused) return;
+                if (isTechnicalPause) return;
                 
                 if (timerRunning) {
                     stopTimer();
@@ -2111,18 +2480,41 @@
             });
             
             resetBtn.addEventListener('click', function() {
-                if (isPaused) return;
+                if (isTechnicalPause) return;
                 resetTimer();
             });
             
             add30Btn.addEventListener('click', function() {
-                if (isPaused) return;
+                if (isTechnicalPause) return;
                 addTime();
             });
             
             set30Btn.addEventListener('click', function() {
-                if (isPaused) return;
+                if (isTechnicalPause) return;
                 set30Seconds();
+            });
+            
+            // Обработчик тех. паузы
+            technicalPauseBtn.addEventListener('click', function() {
+                isTechnicalPause = !isTechnicalPause;
+                
+                if (isTechnicalPause) {
+                    this.innerHTML = '<i class="fas fa-cog"></i> Возобновить';
+                    this.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+                    addLogEntry('Техническая пауза включена');
+                    togglePauseState(true);
+                } else {
+                    this.innerHTML = '<i class="fas fa-cog"></i> Тех. пауза';
+                    this.style.background = 'linear-gradient(135deg, #9c27b0, #7b1fa2)';
+                    addLogEntry('Техническая пауза выключена');
+                    togglePauseState(false);
+                }
+            });
+            
+            // Обработчик следующего дня в таймера
+            nextDayTimerBtn.addEventListener('click', function() {
+                if (isTechnicalPause) return;
+                nextDay();
             });
             
             // Обработчики шторок
@@ -2158,7 +2550,7 @@
                     btn.textContent = i;
                     btn.dataset.player = i;
                     btn.addEventListener('click', function() {
-                        if (isPaused) return;
+                        if (isPaused || isTechnicalPause) return;
                         
                         this.classList.toggle('active');
                         
@@ -2181,7 +2573,14 @@
                 // Выпадающие списки для ролевых действий
                 const playerSelects = [mafiaKill, donCheck, commissarCheck, doctorHeal];
                 playerSelects.forEach(select => {
-                    select.innerHTML = '<option value="">Выберите игрока</option>';
+                    select.innerHTML = '';
+                    
+                    // Для одиночного выбора
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = "";
+                    defaultOption.textContent = "Выберите игрока";
+                    select.appendChild(defaultOption);
+                    
                     for (let i = 1; i <= totalPlayers; i++) {
                         const option = document.createElement('option');
                         option.value = i;
@@ -2190,14 +2589,14 @@
                     }
                     
                     // Инициализация класса при загрузке
-                    if (select.value === "") {
-                        select.classList.remove('selected');
-                    } else {
+                    if (select.value) {
                         select.classList.add('selected');
+                    } else {
+                        select.classList.remove('selected');
                     }
 
                     select.addEventListener('change', function() {
-                        if (isPaused) return;
+                        if (isPaused || isTechnicalPause) return;
                         
                         if (this.value) {
                             const actionName = getActionName(this.id);
@@ -2208,18 +2607,16 @@
                         }
                     });
                 });
-
-                // Обработчики для заметок
-                const noteFields = [
-                    votingNotes, mafiaKillNotes, donCheckNotes,
-                    commissarCheckNotes, doctorHealNotes
-                ];
-
-                noteFields.forEach(field => {
-                    field.addEventListener('input', function() {
-                        if (isPaused) return;
-                        addLogEntry(`Обновлены заметки в поле: ${this.id}`);
-                    });
+                
+                // Чекбоксы для выгнанных игроков
+                updateVotedOutPlayersList();
+                
+                // Обработчики для заметок ведущего
+                masterNotes.addEventListener('input', function() {
+                    // Сохраняем заметки в историю дней
+                    if (daysHistory.length > 0) {
+                        daysHistory[daysHistory.length - 1].masterNotes = this.value;
+                    }
                 });
             }
             
@@ -2246,6 +2643,8 @@
                 queuePlayersList.forEach(playerNum => {
                     const queuePlayer = document.createElement('div');
                     queuePlayer.className = 'queue-player';
+                    queuePlayer.draggable = true;
+                    queuePlayer.dataset.player = playerNum;
                     queuePlayer.innerHTML = `
                         <span>${playerNum}</span>
                         <i class="fas fa-times" data-player="${playerNum}"></i>
@@ -2253,7 +2652,7 @@
                     
                     // Добавляем обработчик для удаления из очереди
                     queuePlayer.querySelector('.fa-times').addEventListener('click', function(e) {
-                        if (isPaused) return;
+                        if (isPaused || isTechnicalPause) return;
                         
                         e.stopPropagation();
                         const pNum = parseInt(this.dataset.player);
@@ -2269,19 +2668,93 @@
                         addLogEntry(`Игрок ${pNum} удален из очереди`);
                     });
                     
+                    // Добавляем обработчики для drag and drop
+                    queuePlayer.addEventListener('dragstart', handleDragStart);
+                    queuePlayer.addEventListener('dragover', handleDragOver);
+                    queuePlayer.addEventListener('dragenter', handleDragEnter);
+                    queuePlayer.addEventListener('dragleave', handleDragLeave);
+                    queuePlayer.addEventListener('drop', handleDrop);
+                    queuePlayer.addEventListener('dragend', handleDragEnd);
+                    
                     queuePlayers.appendChild(queuePlayer);
+                });
+            }
+            
+            // Drag and drop функции
+            function handleDragStart(e) {
+                this.classList.add('dragging');
+                dragSrcElement = this;
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', this.dataset.player);
+            }
+            
+            function handleDragOver(e) {
+                e.preventDefault();
+                return false;
+            }
+            
+            function handleDragEnter(e) {
+                this.classList.add('over');
+            }
+            
+            function handleDragLeave(e) {
+                this.classList.remove('over');
+            }
+            
+            function handleDrop(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                
+                if (dragSrcElement !== this) {
+                    const srcPlayer = parseInt(dragSrcElement.dataset.player);
+                    const destPlayer = parseInt(this.dataset.player);
+                    
+                    const srcIndex = queuePlayersList.indexOf(srcPlayer);
+                    const destIndex = queuePlayersList.indexOf(destPlayer);
+                    
+                    // Меняем местами игроков в очереди
+                    queuePlayersList[srcIndex] = destPlayer;
+                    queuePlayersList[destIndex] = srcPlayer;
+                    
+                    updateQueueDisplay();
+                    addLogEntry(`Изменен порядок голосования: игрок ${srcPlayer} и игрок ${destPlayer} поменялись местами`);
+                }
+                
+                return false;
+            }
+            
+            function handleDragEnd(e) {
+                const items = document.querySelectorAll('.queue-player');
+                items.forEach(item => {
+                    item.classList.remove('over');
+                    item.classList.remove('dragging');
                 });
             }
             
             // Функция перехода к следующему дню
             function nextDay() {
-                if (isPaused) return;
+                if (isPaused || isTechnicalPause) return;
+                
+                // Сохраняем данные текущего дня в историю
+                const dayData = {
+                    day: currentDay,
+                    queue: [...queuePlayersList],
+                    mafiaKill: mafiaKill.value,
+                    donCheck: donCheck.value,
+                    commissarCheck: commissarCheck.value,
+                    doctorHeal: doctorHeal.value,
+                    votedOut: [...votedOutPlayers],
+                    dead: [...deadPlayers],
+                    masterNotes: masterNotes.value
+                };
+                
+                daysHistory.push(dayData);
                 
                 currentDay++;
                 updateDayDisplay();
                 
-                // Очищаем выбор ролей (кроме заметок)
-                const playerSelects = document.querySelectorAll('.player-select');
+                // Очищаем выбор ролей
+                const playerSelects = [mafiaKill, donCheck, commissarCheck, doctorHeal];
                 playerSelects.forEach(select => {
                     select.value = "";
                     select.classList.remove('selected');
@@ -2296,11 +2769,117 @@
                 votingBtns.forEach(btn => btn.classList.remove('active'));
                 
                 addLogEntry(`Наступил день ${currentDay}`);
+                
+                // Обновляем список выгнанных игроков
+                updateVotedOutPlayersList();
+            }
+            
+            // Функция отображения истории дней
+            function showHistory() {
+                daySelector.innerHTML = '';
+                dayInfo.innerHTML = '';
+                
+                // Создаем кнопки для выбора дня
+                for (let i = 1; i < currentDay; i++) {
+                    const dayBtn = document.createElement('button');
+                    dayBtn.className = 'day-btn';
+                    dayBtn.textContent = `День ${i}`;
+                    dayBtn.dataset.day = i;
+                    
+                    if (i === daysHistory.length) {
+                        dayBtn.classList.add('active');
+                        showDayInfo(i);
+                    }
+                    
+                    dayBtn.addEventListener('click', function() {
+                        document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        showDayInfo(parseInt(this.dataset.day));
+                    });
+                    
+                    daySelector.appendChild(dayBtn);
+                }
+                
+                historyModal.style.display = 'flex';
+            }
+            
+            // Функция отображения информации о дне
+            function showDayInfo(day) {
+                const dayData = daysHistory[day - 1];
+                if (!dayData) return;
+                
+                let html = '';
+                
+                // Очередь голосования
+                if (dayData.queue && dayData.queue.length > 0) {
+                    html += `<div class="day-action">
+                        <div class="day-action-title">Очередь голосования:</div>
+                        <div>${dayData.queue.join(', ')}</div>
+                    </div>`;
+                }
+                
+                // Килл мафии
+                if (dayData.mafiaKill) {
+                    html += `<div class="day-action">
+                        <div class="day-action-title">Килл мафии:</div>
+                        <div>Игрок ${dayData.mafiaKill}</div>
+                    </div>`;
+                }
+                
+                // Чек дона
+                if (dayData.donCheck) {
+                    html += `<div class="day-action">
+                        <div class="day-action-title">Чек дона:</div>
+                        <div>Игрок ${dayData.donCheck}</div>
+                    </div>`;
+                }
+                
+                // Чек комиссара
+                if (dayData.commissarCheck) {
+                    html += `<div class="day-action">
+                        <div class="day-action-title">Чек комиссара:</div>
+                        <div>Игрок ${dayData.commissarCheck}</div>
+                    </div>`;
+                }
+                
+                // Хилл доктора
+                if (dayData.doctorHeal) {
+                    html += `<div class="day-action">
+                        <div class="day-action-title">Хилл доктора:</div>
+                        <div>Игрок ${dayData.doctorHeal}</div>
+                    </div>`;
+                }
+                
+                // Выгнанные игроки
+                if (dayData.votedOut && dayData.votedOut.length > 0) {
+                    html += `<div class="day-action">
+                        <div class="day-action-title">Выгнанные игроки:</div>
+                        <div>${dayData.votedOut.join(', ')}</div>
+                    </div>`;
+                }
+                
+                // Убитые игроки
+                if (dayData.dead && dayData.dead.length > 0) {
+                    html += `<div class="day-action">
+                        <div class="day-action-title">Убитые игроки:</div>
+                        <div>${dayData.dead.join(', ')}</div>
+                    </div>`;
+                }
+                
+                // Заметки ведущего
+                if (dayData.masterNotes) {
+                    html += `<div class="day-action">
+                        <div class="day-action-title">Заметки ведущего:</div>
+                        <div>${dayData.masterNotes}</div>
+                    </div>`;
+                }
+                
+                dayInfo.innerHTML = html || '<div style="opacity: 0.7; font-style: italic;">Нет данных для этого дня</div>';
             }
             
             // Обработчики событий
             randomizeBtn.addEventListener('click', function() {
-                if (gameStarted || isPaused) return;
+                if (gameStarted || isPaused || isTechnicalPause) return;
                 
                 this.classList.add('animated');
                 setTimeout(() => {
@@ -2308,8 +2887,10 @@
                 }, 1000);
                 
                 deadPlayers = [];
+                votedOutPlayers = [];
                 generateRoles();
                 displayPlayers();
+                updateVotedOutPlayersList();
                 
                 addLogEntry('Роли зарандомилены заново');
             });
@@ -2324,10 +2905,9 @@
                 initNotesSection(); // Инициализация заметок
                 document.getElementById('gameInterface').scrollIntoView({ behavior: 'smooth' });
                 
-                // Показываем кнопки паузы и завершения игры
-                pauseGameBtn.style.display = 'flex';
+                // Показываем кнопки завершения игры
                 endGameBtn.style.display = 'flex';
-                nextDayBtn.style.display = 'flex';
+                historyBtn.style.display = 'flex';
                 startGameBtn.style.display = 'none';
                 
                 // Блокируем настройки
@@ -2335,35 +2915,29 @@
                     btn.disabled = true;
                 });
                 doctorCheckbox.disabled = true;
+                showNotesCheckbox.disabled = true;
                 
                 addLogEntry('Игра начата!');
                 addLogEntry('Роли распределены случайным образом');
             });
             
-            // Обработчик кнопки паузы
-            pauseGameBtn.addEventListener('click', function() {
-                if (this.innerHTML.includes('Пауза')) {
-                    this.innerHTML = '<i class="fas fa-play"></i> Возобновить';
-                    this.style.background = 'linear-gradient(135deg, #9c27b0, #7b1fa2)';
-                    addLogEntry('Игра приостановлена');
-                    isPaused = true;
-                    stopTimer();
-                    togglePauseState(true);
-                } else {
-                    this.innerHTML = '<i class="fas fa-pause"></i> Пауза';
-                    this.style.background = 'linear-gradient(135deg, #ff9800, #f57c00)';
-                    addLogEntry('Игра возобновлена');
-                    isPaused = false;
-                    if (seconds > 0) startTimer();
-                    togglePauseState(false);
-                }
-            });
-            
             // Обработчик кнопки завершения игры
             endGameBtn.addEventListener('click', resetGame);
             
-            // Обработчик кнопки следующего дня
-            nextDayBtn.addEventListener('click', nextDay);
+            // Обработчик кнопки истории дней
+            historyBtn.addEventListener('click', showHistory);
+            
+            // Закрытие модального окна истории
+            closeHistoryModal.addEventListener('click', function() {
+                historyModal.style.display = 'none';
+            });
+            
+            // Закрытие модального окна при клике вне его
+            window.addEventListener('click', function(event) {
+                if (event.target === historyModal) {
+                    historyModal.style.display = 'none';
+                }
+            });
             
             // Закрытие сообщений о победе
             closeMafiaVictoryBtn.addEventListener('click', function() {
@@ -2394,9 +2968,10 @@
                 });
             });
             
-            // Инициализация с рандомными ролями
+            // Инициализация с рандомными ролей
             generateRoles();
             displayPlayers();
+            updateVotedOutPlayersList();
             
             // Добавляем начальную запись в лог
             addLogEntry('Добро пожаловать в игру Мафия!');
